@@ -21,21 +21,45 @@ function App() {
     }
   };
 
+  const checkItem = (index) => {
+    return () => {
+      todos[index].isDone = !todos[index].isDone;
+      addTodos([...todos]);
+    }
+  }
+
   return (
     <div className="App">
       <h1>Todo app</h1>
       <hr />
 
       <FormCreator createTodo={addTodo} />
-
+      <div className='container'>
+      <div>
+      <h2>Todo</h2>
+        {
+          todos.map((todo, index) => {
+            if(todo.isDone === false){
+              return (
+                <TodoItem key={index} itemIndex={index} removeItem={removeTodo(index)} todo={todo} checkItem={checkItem(index)} />
+                );
+              }
+          })
+        }
+      </div>
+      <div>
+      <h2>Done</h2>
       {
         todos.map((todo, index) => {
-          return (
-            <TodoItem key={index} itemIndex={index} removeItem={removeTodo(index)} title={todo.title} checkItem={() => { }} />
-          );
+          if(todo.isDone === true){
+            return (
+              <TodoItem key={index} itemIndex={index} removeItem={removeTodo(index)} todo={todo} checkItem={checkItem(index)} />
+            );
+          }
         })
       }
-
+      </div>
+    </div>
     </div>
   );
 }
